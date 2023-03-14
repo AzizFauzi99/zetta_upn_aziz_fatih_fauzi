@@ -1,27 +1,50 @@
-function purchaseBook(title, author, price, discountPercentage, taxPercentage) {
-    // Constants
-    const TAX_RATE = 0.01;
+function purchaseBook(title, author, price, discountPercentage, stockAmount, purchaseAmount) {
+
+    // Define constant tax percentage = 11%
+    const taxPercentage = 11;
+
+    // bool variabel untuk mengecek stock buku
+    let isAvailable = purchaseAmount > stockAmount;
+    
+    // Check Stock
+    if(isAvailable){
+      console.log("Stok buku tidak memenuhi");
+      return 0;
+    }
+
+    // Inisialisasi variabel
+    let totalPurchaseAmount = 0;
+    let totalPrice = 0;
+
+    // Looping selama stock masih ada dan purchase amount lebih kecil dari stock
+    for (let i = 0; i < purchaseAmount && stockAmount > 0; i++) {
+
+      // Hitung diskon and harga setelah diskon 
+      let discountAmount = price * (discountPercentage / 100);
+      let priceAfterDiscount = price - discountAmount;
+
+      // Hitung tax (pajak) dan harga setelah tax
+      let taxAmount = priceAfterDiscount * (taxPercentage / 100);
+      let priceAfterTax = priceAfterDiscount + taxAmount;
+
+      // Tambah ke total purchase amount dan total price
+      totalPurchaseAmount++;
+      totalPrice += priceAfterTax;
+
+      // Update jumlah stock 
+      stockAmount--;
+    }
   
-    // Calculate discount and price after discount
-    const discountAmount = price * (discountPercentage / 100);
-    const priceAfterDiscount = price - discountAmount;
-  
-    // Calculate tax and price after tax
-    const taxAmount = priceAfterDiscount * (taxPercentage / 100);
-    const priceAfterTax = priceAfterDiscount + taxAmount;
-  
-    // Display all parameters with additional data
+    // Display semua data
     console.log("Title: " + title);
     console.log("Author: " + author);
-    console.log("Price: $" + price.toFixed(2));
+    console.log("Price per book: $" + price.toFixed(2));
     console.log("Discount: " + discountPercentage + "%");
-    console.log("Discount amount: $" + discountAmount.toFixed(2));
-    console.log("Price after discount: $" + priceAfterDiscount.toFixed(2));
-    console.log("Tax: " + taxPercentage + "%");
-    console.log("Tax amount: $" + taxAmount.toFixed(2));
-    console.log("Price after tax: $" + priceAfterTax.toFixed(2));
+    console.log("Total purchase amount: " + totalPurchaseAmount);
+    console.log("Total price: $" + totalPrice.toFixed(2));
+    console.log("Stock amount: " + stockAmount);
   
-    return priceAfterTax;
+    return totalPrice;
   }
 
-  purchaseBook("The Great Gatsby", "F. Scott Fitzgerald", 12.99, 20, 7);
+  purchaseBook("Koala Kumal", "Raditya Dika", 13.49, 15, 10, 6);
